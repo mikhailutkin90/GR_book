@@ -107,5 +107,7 @@ def output_read(file_name_entry):
         transaction_ammounts[i] = float(next_row[3])
     return transaction_dates, transaction_names, transaction_ammounts, row_count, transaction_numbers
 
+#git comment
+
 
                
