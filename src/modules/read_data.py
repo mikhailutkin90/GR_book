@@ -2,9 +2,14 @@ import csv
 import dropbox
 
 def source_read(file_name_entry):
+    '''Reads data into lists from the source file_name_entry.csv file 
+    uploaded by the user to the project folder on dropbox. 
+    Creates modified source __source_mod.csv file with only needed data.
+    Creates empty cumulative input file if it does not exist.'''
+
     csv_file_path = "/" + file_name_entry.get() + ".csv"
     with open('key.txt', 'r') as file:
-        key = file.read() #get the access key for dropbox
+        key = file.read() 
 
     dbx = dropbox.Dropbox(key)
     result = dbx.files_list_folder('')
@@ -12,8 +17,6 @@ def source_read(file_name_entry):
     for val in result.entries:
             if val.name == file_name_entry.get() + ".csv":
                 _, response = dbx.files_download(csv_file_path)
-
-                    # Read and decode the CSV content
                 csv_content = response.content.decode('utf-8')
                 row_count=0
                 csv_reader = csv.reader(csv_content.splitlines())
@@ -24,7 +27,6 @@ def source_read(file_name_entry):
                 transaction_names = [None] * (row_count-1)
 
                 csv_reader = csv.reader(csv_content.splitlines(), delimiter = ';')
-                # Skip the header row
 
                 next(csv_reader, None)
                             
@@ -37,55 +39,46 @@ def source_read(file_name_entry):
                     transaction_ammounts[i] = transaction_ammounts[i].replace(',', '.')
                     transaction_ammounts[i] = float(transaction_ammounts[i])
 
-                #modify source file
-                mod_csv_file_name = file_name_entry.get() + "_mod.csv"
+                source_mod = file_name_entry.get() + "_source_mod.csv"
                 
-                    # Create the CSV file and write the rows
-                with open(mod_csv_file_name, 'w', newline='', encoding='utf-8') as csvfile:
+                with open(source_mod, 'w', newline='', encoding='utf-8') as csvfile:
                     csv_writer = csv.writer(csvfile)
 
                     for i in range(row_count-1):
-                        # Create a list representing a row
-                        row = [i, transaction_dates[i], transaction_names[i], transaction_ammounts[i], 0, 0, 0, 0, 0, 0,]
-
-                        # Write the row to the CSV file
+                        row = [i, transaction_dates[i], transaction_names[i], transaction_ammounts[i], 0, 0, 0, 0]
                         csv_writer.writerow(row)
-
-                        # Upload the CSV file to Dropbox
-                with open(mod_csv_file_name, 'rb') as file:
-                    dbx.files_upload(file.read(), f'/{mod_csv_file_name}', mode=dropbox.files.WriteMode.overwrite)
-                #create empty temp if it does not exist
-                temp_csv_file_name = file_name_entry.get() + "_temp.csv"
+                with open(source_mod, 'rb') as file:
+                    dbx.files_upload(file.read(), f'/{source_mod}', mode=dropbox.files.WriteMode.overwrite)
+                #create empty cumulative user input file if it does not exist
+                cum_input_file = file_name_entry.get() + "_cum_input.csv"
                 re=True
                 b=[]
                 for val2 in result.entries:
                     b.append(val2.name) 
                 for elem in b:
-                    if elem == temp_csv_file_name:
+                    if elem == cum_input_file:
                         re=False
                 if re:
-                    with open(temp_csv_file_name, 'w', newline='', encoding='utf-8') as csvfile:
+                    with open(cum_input_file, 'w', newline='', encoding='utf-8') as csvfile:
                             csv_writer = csv.writer(csvfile)
                             csv_writer.writerow([])
-
-                                # Upload the temp CSV file to Dropbox
-                    with open(temp_csv_file_name, 'rb') as file:
-                        dbx.files_upload(file.read(), f'/{temp_csv_file_name}')
+                    with open(cum_input_file, 'rb') as file:
+                        dbx.files_upload(file.read(), f'/{cum_input_file}')
                 result = 1
                 return result
             else:
                 result = 0
                 return result
             
-def output_read(file_name_entry):
-    output_csv_file_path = "/" + file_name_entry.get() + "_output.csv"
+def remain_source_read(file_name_entry):
+    '''Reads data into lists from _remain_source.csv file.'''
+    remain_source = "/" + file_name_entry.get() + "_remain_source.csv"
     
     with open('key.txt', 'r') as file:
-        key = file.read() #get the access key for dropbox
+        key = file.read()
 
     dbx = dropbox.Dropbox(key)
-    _, response = dbx.files_download(output_csv_file_path)
-        # Read and decode the CSV content
+    _, response = dbx.files_download(remain_source)
     csv_content = response.content.decode('utf-8')
     row_count=0
     csv_reader = csv.reader(csv_content.splitlines())
@@ -107,7 +100,6 @@ def output_read(file_name_entry):
         transaction_ammounts[i] = float(next_row[3])
     return transaction_dates, transaction_names, transaction_ammounts, row_count, transaction_numbers
 
-#git comment
 
 
                
