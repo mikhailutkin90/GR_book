@@ -3,7 +3,12 @@ from dropbox.oauth import DropboxOAuth2FlowNoRedirect
 import tkinter as tk
 from tkinter import ttk
 
+
+auth_code_entry = None
+
+
 def get_key():
+    global auth_code_entry
     auth_code = auth_code_entry.get()
     x = auth_flow.finish(auth_code)
     access_token = x.access_token
