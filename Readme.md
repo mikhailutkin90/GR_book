@@ -12,5 +12,6 @@ The login GUI windwos allows the user to copy the oauth 2.0 link and paste the c
 ![Image Alt Text](./images/i1.png)
 ![Image Alt Text](./images/i2.PNG)
 ![Image Alt Text](./images/i3.PNG)
+
 The actual GR_book GUI interface allows the user to choose VAT percent ammount 24% or 0% and to choose the standard bookkeeping code for each transaction. For more complicated cases to leave the values to be entered manually. 
 ![Image Alt Text](./images/i4.png)
