@@ -9,3 +9,6 @@ The input from the user eg. vat ammounts or transaction codes are used to comple
 
 In the GUI the login requires user connection to dropbox cloud service where temporary .csv files are stored. It allows several users work with the same data and allows to continue interrupted work at any time.
 ![Image Alt Text](./images/i1.png)
+![Image Alt Text](./images/i2.png)
+![Image Alt Text](./images/i3.png)
+![Image Alt Text](./images/i4.png)
