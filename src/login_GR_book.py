@@ -38,7 +38,7 @@ tk.Label(root, text="Login to Dropbox and press allow").grid(row=2, column=0, st
 tk.Label(root, text="Enter the auth code here: ").grid(row=3, column=0, sticky=tk.W)
 auth_code_entry = ttk.Entry(root, width=85)
 auth_code_entry.grid(row=3, column=1, sticky=tk.W)
-ttk.Button(root, text="Log in", command=get_key).grid(row=4, column=0, sticky=tk.W)
+ttk.Button(root, text="Log in", command = lambda: get_key()).grid(row=4, column=0, sticky=tk.W)
 
 root.mainloop()
 
